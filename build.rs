@@ -1,3 +1,3 @@
 fn main() {
-    let _ = slint_build::compile("./ui/mainWindow.slint");
+    let _ = slint_build::compile("./ui/mainWindow.slint").unwrap();
 }
