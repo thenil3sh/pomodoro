@@ -1,14 +1,107 @@
 import "./fonts/Montserrat/static/Montserrat-Black.ttf";
-
-component TermsAndConditions inherits Rectangle {
+import "./fonts/Kings-Feast/KingsFeast-10g2.ttf";
+import {ScrollView} from "std-widgets.slint";
+component PopHeader inherits Rectangle {
+    background: white.darker(0.1);
+    border-radius: 35px;
     Text {
-        font-size : 50px;
-        text : "hey There!";
-        font-family : "Montserrat";
-        font-weight : 900;
+        font-size: ta.has-hover ? 55px : 50px;
+        text: "there, Hey!";
+        color: grey.darker(1.6);
+        font-family: "Montserrat";
+        font-weight: 900;
+        rotation-angle: ta.has-hover ? 2deg : 0deg;
+        animate rotation-angle {
+            iteration-count: 2;
+            direction: alternate;
+            duration: 200ms;
+            easing: ease-in-out;
+        }
+        animate font-size {
+            direction: normal;
+            duration: 200ms;
+            easing: ease-out;
+        }
+    }
+
+    ta := TouchArea { }
+}
+
+component Terms {
+    in property <string> text: "dummy";
+    in property <string> font-family: "JetBrains Mono";
+    in property <length> font-size: 32px;
+    in property <color> color: darkgrey.darker(3);
+    property <length> patch-height: texts.height + subtext.height;
+    in property <string> subtext: "Dummy";
+    in property <string> subtext-font: "JetBrains Mono";
+    in property <length> subtext-size: 20px;
+    in property <color> text-color : grey.darker(0.5);
+    in property <color> subtext-color : text-color;
+
+    rect := Rectangle {
+        height: texts.height + subtext.height + 100px;
+        background: white;
+        border-radius: 40px;
+
+        texts := Text {
+            color: text-color;
+            width: parent.width - 80px;
+            font-size: root.font-size;
+            text: root.text;
+            font-family: root.font-family;
+            wrap: word-wrap;
+            font-weight: 900;
+        }
+
+        subtext := Text {
+            y: texts.height + 50px + texts.y;
+            font-family: subtext-font;
+            text: root.subtext;
+            color : subtext-color;
+            wrap: word-wrap;
+            width: parent.width - 80px;
+            font-size : subtext-size;
+        }
     }
 }
 
+//component TermsAndConditions inherits Rectangle {
+//    PopHeader { }
+//}
+
 export component Main inherits Window {
-    TermsAndConditions {}
+    rect := Rectangle {
+        width: root.width - 60px;
+        background: white.darker(0.05);
+            HorizontalLayout {
+                x : 50px;
+                width : parent.width - 100px;
+                alignment: center;
+                spacing: 20px;
+                VerticalLayout {
+                    y: 80px;
+                    alignment: start;
+                    spacing: 30px;
+                    Terms {
+                        font-family: "Montserrat";
+                        font-size: 40px;
+                        text: "Your tasks, timer, sessions, or anything else you enter here, can't be read by anyone else, but you.";
+                        subtext: "";
+                    }
+                }
+
+                VerticalLayout {
+                    y: 80px;
+                    alignment: start;
+                    spacing: 30px;
+                    Terms {
+                        font-family: "Montserrat";
+                        font-size: 40px;
+                        text: "So, any user data you generate here, stays in your browser...";
+                        subtext: "and ofcourse, stays there, as long as you don't clear up your browser data, or mess up with the cookies.";
+                    }
+                }
+            }
+    }
 }
